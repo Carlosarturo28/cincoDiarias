@@ -17,8 +17,9 @@ import {
   ParallaxSwiperPage
 } from "./parallaxOnboarding";
 import Styles from './styles';
+import { Actions } from 'react-native-router-flux';
 
-export default class App extends React.Component {
+export default class Onboarding extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -130,7 +131,7 @@ export default class App extends React.Component {
                   Mira las palabras que has guardado y practica con ellas.
               </Text>
                 <TouchableWithoutFeedback
-                  onPress={() => ToastAndroid.show('A pikachu appeared nearby!', ToastAndroid.SHORT)}
+                  onPress={() => Actions.home()}
                 >
                   <View style={Styles.buttonOnboarding}>
                     <Text style={Styles.submitText}>Comenzar</Text>

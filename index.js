@@ -1,4 +1,4 @@
 import { AppRegistry } from 'react-native';
-import App from './App';
+import Router from './Router';
 
-AppRegistry.registerComponent('cincoDiarias', () => App);
+AppRegistry.registerComponent('cincoDiarias', () => Router);
