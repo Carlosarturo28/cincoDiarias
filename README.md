@@ -1,2 +1,2 @@
 # cincoDiarias
-An App for learn new vocabulary everyday.
+An App to learn new vocabulary everyday.
