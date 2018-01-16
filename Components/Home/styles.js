@@ -23,6 +23,7 @@ module.exports = StyleSheet.create({
         shadowColor: '#0096A6',
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.2,
+        paddingRight: 24,
         shadowRadius: 4,
         elevation: 4
       },
@@ -31,8 +32,9 @@ module.exports = StyleSheet.create({
         fontSize: 36,
         fontFamily: 'Montserrat-Medium',
         color: '#00213F',
-        marginTop: 14,
+        marginTop: 16,
         marginLeft: 26,
+        marginBottom: 16,
         backgroundColor: 'transparent'
       },
       description: {

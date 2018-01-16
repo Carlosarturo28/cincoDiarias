@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import Swiper from 'react-native-deck-swiper';
-import { Button, StyleSheet, StatusBar, Text, View } from 'react-native';
-import Styles from './styles'
+import { Button, StyleSheet, StatusBar, Text, View, Dimensions, Image } from 'react-native';
+import Styles from './styles';
 
 export default class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
       cards: [{
-        word: 'hola',
-        description: 'this is a description',
-        example: 'This is an example',
+        word: 'Experience',
+        description: 'Knowledge that you get from doing a job, or from doing, seeing, or feeling something',
+        example: 'You’ve obviously had experience of babysitting.',
         grammar: 'noun'
       },
       {
@@ -84,6 +84,8 @@ export default class App extends Component {
             this.swiper = swiper
           }}
           onSwiped={this.onSwiped}
+          disableTopSwipe={true}
+          disableBottomSwipe={true}
           onTapCard={console.log('Tap')}
           titles={this.state.titles}
           cards={this.state.cards}
@@ -92,71 +94,60 @@ export default class App extends Component {
           renderCard={this.renderCard}
           onSwipedAll={this.onSwipedAllCards}
           overlayLabels={{
-            bottom: {
-              title: 'BLEAH',
-              style: {
-                label: {
-                  backgroundColor: 'black',
-                  borderColor: 'black',
-                  color: 'white',
-                  borderWidth: 1
-                },
-                wrapper: {
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }
-              }
-            },
             left: {
-              title: 'NOPE',
+              element:
+                  <Image
+                    source={require('../../assets/img/discard.png')}
+                  />,
               style: {
                 label: {
-                  backgroundColor: 'black',
-                  borderColor: 'black',
+                  textAlign: 'center',
+                  backgroundColor: '#DB6666',
                   color: 'white',
-                  borderWidth: 1
+                  borderColor: '#DB6666',
+                  borderRadius: 40,
+                  width: 80,
+                  height: 80,
                 },
                 wrapper: {
                   flexDirection: 'column',
                   alignItems: 'flex-end',
                   justifyContent: 'flex-start',
-                  marginTop: 30,
-                  marginLeft: -30
+                  marginLeft: 24,
+                  marginTop: -24,
+                  shadowColor: '#000000',
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: 0.2,
+                  shadowRadius: 4,
+                  elevation: 4
                 }
               }
             },
             right: {
-              title: 'LIKE',
+              element: <Image
+                source={require('../../assets/img/save.png')}
+              />,
               style: {
                 label: {
-                  backgroundColor: 'black',
-                  borderColor: 'black',
+                  textAlign: 'center',
+                  backgroundColor: '#93D07C',
                   color: 'white',
-                  borderWidth: 1
+                  borderColor: '#93D07C',
+                  borderRadius: 40,
+                  width: 80,
+                  height: 80
                 },
                 wrapper: {
                   flexDirection: 'column',
                   alignItems: 'flex-start',
                   justifyContent: 'flex-start',
-                  marginTop: 30,
-                  marginLeft: 30
-                }
-              }
-            },
-            top: {
-              title: 'SUPER LIKE',
-              style: {
-                label: {
-                  backgroundColor: 'black',
-                  borderColor: 'black',
-                  color: 'white',
-                  borderWidth: 1
-                },
-                wrapper: {
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center'
+                  marginLeft: -24,
+                  marginTop: -24,
+                  shadowColor: '#000000',
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: 0.2,
+                  shadowRadius: 4,
+                  elevation: 4
                 }
               }
             }
