@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import Swiper from 'react-native-deck-swiper';
-import { Button, StyleSheet, StatusBar, Text, View, Dimensions, Image, TouchableWithoutFeedback, ToastAndroid } from 'react-native';
+import { Button, StyleSheet, StatusBar, TouchableOpacity, Text, Linking, Modal, View, Dimensions, Image, ToastAndroid } from 'react-native';
 import Styles from './styles';
+import SwiperContainer from './SwiperContainer';
+
 
 export default class App extends Component {
   constructor(props) {
@@ -28,8 +30,17 @@ export default class App extends Component {
       swipedAllCards: false,
       swipeDirection: '',
       isSwipingBack: false,
-      cardIndex: 0
+      cardIndex: 0,
+      modalVisible: false,
     }
+  }
+
+  openModal() {
+    this.setState({ modalVisible: true });
+  }
+
+  closeModal() {
+    this.setState({ modalVisible: false, });
   }
 
   renderCard = card => {
@@ -59,135 +70,95 @@ export default class App extends Component {
     }
   }
 
-onSwipedAllCards = () => {
-  this.setState({
-    swipedAllCards: true
-  })
-};
-
-swipeBack = () => {
-  if (!this.state.isSwipingBack) {
-    this.setIsSwipingBack(true, () => {
-      this.swiper.swipeBack(() => {
-        this.setIsSwipingBack(false)
-      })
+  onSwipedAllCards = () => {
+    this.setState({
+      swipedAllCards: true
     })
+  };
+
+  swipeBack = () => {
+    if (!this.state.isSwipingBack) {
+      this.setIsSwipingBack(true, () => {
+        this.swiper.swipeBack(() => {
+          this.setIsSwipingBack(false)
+        })
+      })
+    }
+  };
+
+  setIsSwipingBack = (isSwipingBack, cb) => {
+    this.setState(
+      {
+        isSwipingBack: isSwipingBack
+      },
+      cb
+    )
+  };
+
+  swipeLeft = () => {
+    this.swiper.swipeLeft()
+  };
+
+  render() {
+    console.log(this.state)
+    return (
+      <View style={Styles.container}>
+        <StatusBar
+          backgroundColor="black"
+          barStyle="light-content"
+        />
+
+        <View style={Styles.about}>
+          <TouchableOpacity onPress={() => this.openModal()}>
+            <Image style={Styles.aboutImg}
+              source={require('../../assets/img/about.png')}
+            />
+          </TouchableOpacity>
+        </View>
+        <SwiperContainer
+          modalVisible={this.state.modalVisible}
+          onSwiped={this.onSwiped}
+          title={this.state.titles}
+          cards={this.state.cards}
+          // cardIndex={this.state.cardIndex}
+          renderCard={this.renderCard}
+          onSwipedAll={this.onSwipedAllCards}
+        />
+        {this.renderEmptyState()}
+        <View style={Styles.saved}>
+          <TouchableOpacity onPress={() => ToastAndroid.show('A pikachu appeared nearby!', ToastAndroid.SHORT)}>
+            <Image style={Styles.savedImg}
+              source={require('../../assets/img/savedCards.png')}
+            />
+          </TouchableOpacity>
+        </View>
+        <Modal
+          transparent
+          visible={this.state.modalVisible}
+          animationType={'fade'}
+          onRequestClose={() => this.closeModal()}
+        >
+          <View style={Styles.modalContainer}>
+            <View style={Styles.innerContainer}>
+            <Image style={Styles.logo}
+            source={require('../../assets/img/logo.png')}
+          />
+              <Text style={Styles.modalFontTitle}>Learn new vocabulary everyday!</Text>
+              <Text style={Styles.modalFont}>The idea is simple, you learn five word per day. That's it. </Text>
+              <Text style={Styles.modalFont}>Swipe left the one you don't want to save. Swipe right the one you want to save for later (ala Tinder).</Text>
+              <Text style={Styles.modalFontCredit}>Designed and Developed by</Text>
+              <Text style={Styles.link} onPress={() => Linking.openURL('https://twitter.com/cartur28/')}>Carlos Navarro</Text>
+            </View>
+            <View style={Styles.close}>
+            <TouchableOpacity onPress={() => this.closeModal()}>
+                <Image style={Styles.closeImg}
+                  source={require('../../assets/img/close.png')}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      </View>
+    )
   }
-};
-
-setIsSwipingBack = (isSwipingBack, cb) => {
-  this.setState(
-    {
-      isSwipingBack: isSwipingBack
-    },
-    cb
-  )
-};
-
-swipeLeft = () => {
-  this.swiper.swipeLeft()
-};
-
-render() {
-  return (
-    <View style={Styles.container}>
-      <StatusBar
-        backgroundColor="black"
-        barStyle="light-content"
-      />
-      <View style={Styles.about}>
-        <TouchableWithoutFeedback onPress={() => ToastAndroid.show('A pikachu appeared nearby!', ToastAndroid.SHORT)}>
-          <Image style={Styles.aboutImg}
-            source={require('../../assets/img/about.png')}
-          />
-        </TouchableWithoutFeedback>
-      </View>
-      <Swiper
-        ref={swiper => {
-          this.swiper = swiper
-        }}
-        onSwiped={this.onSwiped}
-        backgroundColor='#6EBECD'
-        disableTopSwipe={true}
-        disableBottomSwipe={true}
-        onTapCard={console.log('Tap')}
-        titles={this.state.titles}
-        cards={this.state.cards}
-        cardIndex={this.state.cardIndex}
-        cardHorizontalMargin={0}
-        cardVerticalMargin={80}
-        renderCard={this.renderCard}
-        onSwipedAll={this.onSwipedAllCards}
-        overlayLabels={{
-          left: {
-            element:
-              <Image style={{ width: '25%', height: '20%' }}
-                source={require('../../assets/img/discard.png')}
-              />,
-            style: {
-              label: {
-                textAlign: 'center',
-                backgroundColor: '#DB6666',
-                color: 'white',
-                borderColor: '#DB6666',
-                borderRadius: 40,
-                width: 40,
-                height: 40,
-              },
-              wrapper: {
-                flexDirection: 'column',
-                alignItems: 'flex-end',
-                justifyContent: 'flex-start',
-                shadowColor: '#000000',
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.2,
-                shadowRadius: 4,
-                elevation: 4
-              }
-            }
-          },
-          right: {
-            element: <Image style={{ width: '25%', height: '20%' }}
-              source={require('../../assets/img/save.png')}
-            />,
-            style: {
-              label: {
-                textAlign: 'center',
-                backgroundColor: '#93D07C',
-                color: 'white',
-                borderColor: '#93D07C',
-                borderRadius: 40,
-                width: 80,
-                height: 80
-              },
-              wrapper: {
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-                justifyContent: 'flex-start',
-                marginLeft: -2,
-                marginTop: -2,
-                shadowColor: '#000000',
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.2,
-                shadowRadius: 4,
-                elevation: 4
-              }
-            }
-          }
-        }}
-        animateOverlayLabelsOpacity
-        animateCardOpacity
-      >
-      </Swiper>
-      {this.renderEmptyState()}
-      <View style={Styles.saved}>
-        <TouchableWithoutFeedback onPress={() => ToastAndroid.show('A pikachu appeared nearby!', ToastAndroid.SHORT)}>
-          <Image style={Styles.savedImg}
-            source={require('../../assets/img/savedCards.png')}
-          />
-        </TouchableWithoutFeedback>
-      </View>
-    </View>
-  )
-}
 }

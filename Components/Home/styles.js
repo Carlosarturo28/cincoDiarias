@@ -110,5 +110,66 @@ module.exports = StyleSheet.create({
         fontSize: 30,
         color: 'white',
         backgroundColor: 'transparent'
+    },
+    modalContainer: {
+        zIndex: 99,
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0,0,0,0.6)',        
+      },
+    innerContainer: {
+        paddingTop: 18,
+        paddingBottom: 28,
+        paddingHorizontal: 28,
+        marginHorizontal: 18,
+        borderRadius: 12,
+        borderWidth: 0,
+        borderColor: 'transparent',
+        justifyContent: 'center',
+        backgroundColor: 'white',
+        alignItems: 'center',
+      },
+      modalFont: {
+        marginTop: 10,
+        fontFamily: 'Montserrat-Medium',
+        textAlign: 'center',
+        color: '#B3B3B3',
+        fontSize: 18
+      },
+      modalFontTitle: {
+        marginTop: 18,
+        fontFamily: 'Montserrat-Medium',
+        textAlign: 'center',
+        color: '#535353',
+        fontSize: 20
+      },
+      modalFontCredit: {
+        marginTop: 18,
+        fontFamily: 'Montserrat-Medium',
+        color: '#747474',
+        textAlign: 'center',
+        fontSize: 14
+      },
+      closeImg: {
+        width: 40,
+        height: 40,
+    },
+    close: {
+        zIndex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 30,
+    },
+    logo: {
+        marginTop: 10,
+        width: 209,
+        height: 70
+    },
+    link: {
+        fontFamily: 'Montserrat-Medium',
+        color: '#6E73D0',
+        textAlign: 'center',
+        fontSize: 14
     }
 });
