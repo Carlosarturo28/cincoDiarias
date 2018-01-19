@@ -8,6 +8,7 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   ToastAndroid,
+  AsyncStorage,
   StatusBar,
   Button
 } from "react-native";
@@ -52,6 +53,11 @@ export default class Onboarding extends React.Component {
     ]
   });
 
+  redirectHome() {
+    AsyncStorage.setItem('firstTime', 'true');
+    Actions.home();
+  }
+
   render() {
     return (
       <View>
@@ -64,7 +70,7 @@ export default class Onboarding extends React.Component {
           animatedValue={this.myCustomAnimatedValue}
           dividerWidth={0}
           dividerColor="black"
-          backgroundColor="black"
+          backgroundColor="#6EBECD"
           onMomentumScrollEnd={activePageIndex => console.log('hola')}
           showProgressBar={false}
           progressBarBackgroundColor="rgba(255,255,255,0.65)"
@@ -131,7 +137,7 @@ export default class Onboarding extends React.Component {
                   Mira las palabras que has guardado y practica con ellas.
               </Text>
                 <TouchableWithoutFeedback
-                  onPress={() => Actions.home()}
+                  onPress={() => this.redirectHome()}
                 >
                   <View style={Styles.buttonOnboarding}>
                     <Text style={Styles.submitText}>Comenzar</Text>
