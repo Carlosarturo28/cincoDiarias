@@ -8,6 +8,7 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   ToastAndroid,
+  AsyncStorage,
   StatusBar,
   Button
 } from "react-native";
@@ -17,8 +18,9 @@ import {
   ParallaxSwiperPage
 } from "./parallaxOnboarding";
 import Styles from './styles';
+import { Actions } from 'react-native-router-flux';
 
-export default class App extends React.Component {
+export default class Onboarding extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -51,6 +53,11 @@ export default class App extends React.Component {
     ]
   });
 
+  redirectHome() {
+    AsyncStorage.setItem('firstTime', 'true');
+    Actions.home();
+  }
+
   render() {
     return (
       <View>
@@ -63,7 +70,7 @@ export default class App extends React.Component {
           animatedValue={this.myCustomAnimatedValue}
           dividerWidth={0}
           dividerColor="black"
-          backgroundColor="black"
+          backgroundColor="#6EBECD"
           onMomentumScrollEnd={activePageIndex => console.log('hola')}
           showProgressBar={false}
           progressBarBackgroundColor="rgba(255,255,255,0.65)"
@@ -130,7 +137,7 @@ export default class App extends React.Component {
                   Mira las palabras que has guardado y practica con ellas.
               </Text>
                 <TouchableWithoutFeedback
-                  onPress={() => ToastAndroid.show('A pikachu appeared nearby!', ToastAndroid.SHORT)}
+                  onPress={() => this.redirectHome()}
                 >
                   <View style={Styles.buttonOnboarding}>
                     <Text style={Styles.submitText}>Comenzar</Text>
