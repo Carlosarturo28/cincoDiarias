@@ -57,19 +57,19 @@ export default class SavedCard extends Component {
         }
     }
 
-    renderSavedCard = savedCards => {
+    cutString = value => {
+        if (value.length > 64) return value.substring(0, 64) + '...';
+        return value;
+    }
 
-        const array = savedCards.map(item => {
-            return (<View style={Styles.externalCard}>
+    renderSavedCard = savedCards => savedCards.map(item => (
+            <View key={item._id} style={Styles.externalCard}>
                 <View style={Styles.card}>
                     <Text style={Styles.word}>{item.word}</Text>
-                    <Text style={Styles.description}>{item.description}</Text>
+                    <Text style={Styles.description}>{this.cutString(item.description)}</Text>
                 </View>
-            </View>);
-        })
-
-        return array;
-    };
+            </View>
+        ))
 
     render() {
         const contenido = this.state.savedCards === null ?
@@ -77,6 +77,8 @@ export default class SavedCard extends Component {
             this.renderSavedCard(this.state.savedCards);
         return (
             <ScrollView style={Styles.container}>
+            <View style={Styles.topPadding}>
+            </View>
                 {contenido}
             </ScrollView>
         )

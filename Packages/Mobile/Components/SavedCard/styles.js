@@ -13,7 +13,7 @@ module.exports = StyleSheet.create({
     },
     externalCard: {
         width: '100%',
-        paddingTop: 20,
+        paddingBottom: 16,
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -32,22 +32,24 @@ module.exports = StyleSheet.create({
     },
     word: {
         textAlign: 'left',
-        fontSize: 36,
+        fontSize: 24,
         fontFamily: 'Montserrat-Medium',
         color: '#00213F',
-        marginTop: 16,
+        marginTop: 10,
         marginLeft: 26,
-        marginBottom: 16,
+        marginBottom: 4,
         backgroundColor: 'transparent'
     },
     description: {
         textAlign: 'left',
-        fontSize: 16,
+        fontSize: 14,
         fontFamily: 'Montserrat-Light',
         color: '#666666',
-        marginTop: 10,
         marginLeft: 26,
         marginBottom: 16,
         backgroundColor: 'transparent'
+    },
+    topPadding: {
+        paddingTop: 24
     }
 })
