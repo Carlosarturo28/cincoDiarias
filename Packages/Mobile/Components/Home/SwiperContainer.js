@@ -7,8 +7,6 @@ import Api from '../Integrations/Api';
 
 export default class SwiperContainer extends Component {
   shouldComponentUpdate(nextProps) {
-    console.log(this.props.modalVisible, nextProps.modalVisible)
-    console.log(nextProps.modalVisible === this.props.modalVisible)
     return nextProps.modalVisible === this.props.modalVisible
   }
 
@@ -17,7 +15,6 @@ export default class SwiperContainer extends Component {
     Utils.obtenerUserId()
     .then(user => {
       Api.asociarCards(user, cardId, saved);
-      console.log(user);
     })
     .catch(err =>{
       throw err;
@@ -41,7 +38,6 @@ export default class SwiperContainer extends Component {
         backgroundColor='#44C9E2'
         disableTopSwipe={true}
         disableBottomSwipe={true}
-        onTapCard={console.log('Tap')}
         titles={this.props.titles}
         cards={this.props.cards}
         cardHorizontalMargin={0}

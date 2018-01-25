@@ -30,6 +30,7 @@ export default class App extends Component {
       isSwipingBack: false,
       cardIndex: 0,
       modalVisible: false,
+      swipedAllTime: null
     }
   }
 
@@ -46,23 +47,23 @@ export default class App extends Component {
       throw error;
     }
 
+    let swipedAllTime;
+
+    try {
+      swipedAllTime = await AsyncStorage.getItem('swipedAllTime');
+      swipedAllTime = swipedAllTime == null ? 0 : swipedAllTime;
+    } catch (error) {
+      throw error;
+    }
+
     let cardsApi;
     try {
       cardsApi = await Api.consultarCards(user);
     } catch (error) {
       throw error;
     }
-    this.setState({ cards: cardsApi })
+    this.setState({ cards: cardsApi, swipedAllTime: parseInt(swipedAllTime) })
   }
-
-
-  // async swipeCards() {
-  //   const userId = '123456789'
-  //   const cardId = 
-  //   const swipedCard = await Api.asociarCards(userId, cardId, saved);
-  //   console.log(JSON.stringify(cardApi));
-  //   this.setState ({ cards: cardApi})
-  // }
 
   renderLoadingView() {
     return <Spinner visible />;
@@ -77,7 +78,13 @@ export default class App extends Component {
   }
 
   renderCards() {
-    return (
+    const actualDate = new Date();
+    const currentTime = actualDate.getTime();
+    const dif = currentTime - this.state.swipedAllTime;
+
+    console.log(this.state.swipedAllTime);
+    if (this.state.swipedAllTime == 0 && !this.state.swipedAllCards) {
+      return(
       <SwiperContainer
         modalVisible={this.state.modalVisible}
         onSwiped={this.onSwiped}
@@ -86,7 +93,27 @@ export default class App extends Component {
         renderCard={this.renderCard}
         onSwipedAll={this.onSwipedAllCards}
       />
-    )
+      )
+    } else if (dif > 30000 && !this.state.swipedAllCards) {
+      return (
+        <SwiperContainer
+          modalVisible={this.state.modalVisible}
+          onSwiped={this.onSwiped}
+          title={this.state.titles}
+          cards={this.state.cards}
+          renderCard={this.renderCard}
+          onSwipedAll={this.onSwipedAllCards}
+        />
+      )
+    } else {
+      return (
+        <View style={Styles.emptyState}>
+          <Image style={Styles.emptyStateImg}
+            source={require('../../assets/img/emptyStateHome.png')}
+          />
+        </View>
+      );
+    }
   }
 
   renderCard = card => {
@@ -102,29 +129,17 @@ export default class App extends Component {
     )
   };
 
-  renderEmptyState = () => {
-    if (this.state.swipedAllCards) {
-      return (
-        <View style={Styles.emptyState}>
-          <Image style={Styles.emptyStateImg}
-            source={require('../../assets/img/emptyStateHome.png')}
-          />
-        </View>
-      )
-    } else {
-      return null
-    }
-  }
-
   onSwipedAllCards = () => {
     this.setState({
       swipedAllCards: true
     })
+    const AllCardsTime = new Date();
+    const swipedAllTime = AllCardsTime.getTime();
+    AsyncStorage.setItem('swipedAllTime', swipedAllTime.toString());
   };
 
   swipeLeft = () => {
     this.swiper.swipeLeft()
-    console.log('Derecha');
   };
 
   render() {
@@ -147,7 +162,6 @@ export default class App extends Component {
           </TouchableOpacity>
         </View>
         {contenido}
-        {this.renderEmptyState()}
         <View style={Styles.saved}>
           <TouchableOpacity onPress={() => Actions.saved()}>
             <Image style={Styles.savedImg}
@@ -171,6 +185,7 @@ export default class App extends Component {
               <Text style={Styles.modalFont}>Swipe left the one you don't want to save. Swipe right the one you want to save for later (ala Tinder).</Text>
               <Text style={Styles.modalFontCredit}>Designed and Developed by</Text>
               <Text style={Styles.link} onPress={() => Linking.openURL('https://twitter.com/cartur28/')}>Carlos Navarro</Text>
+              <Text style={Styles.link} onPress={() => Linking.openURL('https://github.com/cristiandavidippolito/')}>Cristian Ippolito</Text>
             </View>
             <View style={Styles.close}>
               <TouchableOpacity onPress={() => this.closeModal()}>

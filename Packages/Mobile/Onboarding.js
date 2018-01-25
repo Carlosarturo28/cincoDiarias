@@ -17,6 +17,7 @@ import {
   ParallaxSwiper,
   ParallaxSwiperPage
 } from "./parallaxOnboarding";
+import Spinner from 'react-native-loading-spinner-overlay';
 import Styles from './styles';
 import Api from './Components/Integrations/Api';
 import { Actions } from 'react-native-router-flux';
@@ -24,8 +25,15 @@ import { Actions } from 'react-native-router-flux';
 export default class Onboarding extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      createUser: false
+    }
   }
   myCustomAnimatedValue = new Animated.Value(0);
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextState.createUser === this.state.createUser
+  }
 
   getPageTransformStyle = index => ({
     transform: [
@@ -53,6 +61,10 @@ export default class Onboarding extends React.Component {
       }
     ]
   });
+
+  renderLoadingView() {
+    return <Spinner visible />;
+  }
 
   async redirectHome() {
     const idValue = new Date();
@@ -147,8 +159,12 @@ export default class Onboarding extends React.Component {
                 >
                   Mira las palabras que has guardado y practica con ellas.
               </Text>
-                <TouchableWithoutFeedback
-                  onPress={() => this.redirectHome()}
+                <TouchableWithoutFeedback disabled={this.state.createUser}
+                  onPress={() => {this.setState({
+                  createUser: true});
+                  this.renderLoadingView(); 
+                  this.redirectHome()
+                }}
                 >
                   <View style={Styles.buttonOnboarding}>
                     <Text style={Styles.submitText}>Comenzar</Text>
